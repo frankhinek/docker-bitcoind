@@ -134,7 +134,14 @@ in the background, but the node will be usable.
 
 ### Docker Compose
 
-Here is a docker-compose.yml for mainnet
+For easier container management, you can use [Docker Compose].
+
+Prerequisites:
+
+- Create a `bitcoin/` directory in the same location as your `docker-compose.yml`
+- Place your `bitcoin.conf` file in the `bitcoin/` directory
+
+Create a `docker-compose.yml` with the following configuration for mainnet:
 
 ```yaml
 services:
@@ -151,21 +158,28 @@ services:
       - "8332:8332"  # RPC port
 ```
 
-First, ensure that the `bitcoin/` folder is in the directory containing
-`docker-compose.yml`.
+The configuration above:
 
-Then, Docker Compose will mount the `bitcoin/` folder to `/data/.bitcoin`.
+- Mounts local `bitcoin/` directory to `/data/.bitcoin`
+- Maps standard Bitcoin ports (8333 for P2P, 8332 for RPC)
+- Restarts the container on failure
+- Allows 15.5 minutes for clean shutdown
+- Runs as non-root user (UID 1000)
 
-To start the Docker Compose project as a daemon:
+Common commands:
 
 ```sh
+# Start the node in the background
 docker compose up -d
-```
 
-To view the logs:
-
-```sh
+# View container logs
 docker compose logs -f
+
+# Stop the node
+docker compose down
+
+# Check node status
+docker compose ps
 ```
 
 ## Build
@@ -180,4 +194,5 @@ docker push frankhinek/bitcoind:v28.1
 ```
 
 [`bitcoind`]: https://github.com/bitcoin/bitcoin
+[Docker Compose]: https://docs.docker.com/compose/
 [Docker Hub]: https://hub.docker.com/r/frankhinek/bitcoind
