@@ -182,14 +182,30 @@ docker compose down
 docker compose ps
 ```
 
-## Build
+## Building the Image
+
+To build the Bitcoin Core Docker image locally:
 
 ```sh
 cd v28.1/
+
+# Build for your current architecture
+docker buildx build -t frankhinek/bitcoind:v28.1 .
+
+# Build for a specific platform (e.g., ARM64)
 docker buildx build --platform linux/arm64 -t frankhinek/bitcoind:v28.1 .
+
+# Build for multiple platforms
+docker buildx build --platform linux/amd64,linux/arm64 -t frankhinek/bitcoind:v28.1 .
 ```
 
+To push to Docker Hub:
+
 ```sh
+# Login to Docker Hub
+docker login
+
+# Push the image
 docker push frankhinek/bitcoind:v28.1
 ```
 
